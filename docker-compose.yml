@@ -1,0 +1,28 @@
+version: "3.4"
+
+services:
+  mongo:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: food
+      MONGO_INITDB_ROOT_USERNAME: dockerFood
+      MONGO_INITDB_ROOT_PASSWORD: dockerFood
+    ports:
+      - 27018:27017
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo-js:ro
+      - ./mongo-data:/data/db
+  food-go:
+    image: food-go
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 7002:7002
+    volumes:
+      - ./public:/app/public
+    depends_on:
+      - mongo
+    environment:
+      TZ: "Asia/Saigon"

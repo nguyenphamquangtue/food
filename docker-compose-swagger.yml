@@ -1,0 +1,11 @@
+version: "3.4"
+
+services:
+  swagger:
+    image: "swaggerapi/swagger-ui"
+    ports:
+      - "50:8080"
+    volumes:
+      - ../food/:/swagger
+    environment:
+      SWAGGER_JSON: /swagger/swagger.yml
